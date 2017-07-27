@@ -16,9 +16,9 @@ INFLUXDB_PORT | What port is InfluxDB running on? | 8086 | 999 | optional
 INFLUXDB_DB | What InfluxDB database do you want to use? | 'bf1stats' | 'potato' | required
 INFLUXDB_USER | InfluxDB username | | | optional
 INFLUXDB_PASS | InfluxDB password | metrics | | optional
-API_KEY | https://battlefieldtracker.com/site-api API KEY | 43200000 | 1000 | optional
-PLATFORM | 1 for Xbox, 2 for PlayStation, and 3 for Origin | 43200000 | 1000 | optional
-DISPLAYNAME | This value identifies the player you're trying to get data for | 43200000 | 1000 | optional
+API_KEY | https://battlefieldtracker.com/site-api API KEY | '' | 1000 | optional
+PLATFORM | 1 for Xbox, 2 for PlayStation, and 3 for Origin | 2 | 1000 | optional
+DISPLAYNAME | This value identifies the player you're trying to get data for | 'mattvantassel' | 1000 | optional
 UPDATE_INTERVAL_MS | How often should it check for new metrics? | 43200000 | 1000 | optional
 
 ## Tags
