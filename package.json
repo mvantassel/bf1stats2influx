@@ -1,0 +1,13 @@
+{
+  "name": "bf1stats2influx",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "node bf1stats2influx.js"
+  },
+  "devDependencies": {
+    "influx": "~5.0",
+    "request": "^2.75.0",
+    "request-promise": "^4.1.1"
+  }
+}
