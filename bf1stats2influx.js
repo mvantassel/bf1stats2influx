@@ -21,35 +21,23 @@ let statsRequestObj = {
     url: 'https://battlefieldtracker.com/bf1/api/Stats/BasicStats',
     json: true,
     gzip: true,
-    resolveWithFullResponse: true
-};
-
-let lastKnownRank = {
-    number: 1
+    resolveWithFullResponse: true,
+    headers: {
+        'TRN-Api-Key': API_KEY
+    },
+    qs: {
+        platform: PLATFORM,
+        displayName: DISPLAYNAME
+    }
 };
 
 function getBasicStats() {
-    return request(Object.assign(statsRequestObj, {
-        headers: {
-            'TRN-Api-Key': API_KEY
-        },
-        qs: {
-            platform: PLATFORM,
-            displayName: DISPLAYNAME
-        }
-    }));
+    return request(statsRequestObj);
 }
 
 function getDetailedStats() {
     return request(Object.assign(statsRequestObj, {
-        url: 'https://battlefieldtracker.com/bf1/api/Stats/DetailedStats',
-        headers: {
-            'TRN-Api-Key': API_KEY
-        },
-        qs: {
-            platform: PLATFORM,
-            displayName: DISPLAYNAME
-        }
+        url: 'https://battlefieldtracker.com/bf1/api/Stats/DetailedStats'
     }));
 }
 
@@ -74,7 +62,7 @@ function onGetBasicStats(response) {
     };
 
     writeToInflux('stats', value).then(function() {
-        console.dir(`wrote stats data to influx: ${new Date()}`);
+        console.dir(`wrote BasicStats data to influx: ${new Date()}`);
     });
 }
 
@@ -138,7 +126,7 @@ function onGetDetailedStats(response) {
     });
 
     writeToInflux('stats', value).then(function() {
-        console.dir(`wrote stats data to influx: ${new Date()}`);
+        console.dir(`wrote DetailedStats data to influx: ${new Date()}`);
     });
 }
 
