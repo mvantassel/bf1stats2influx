@@ -1,5 +1,9 @@
 'use strict';
 
+if (!process.env.API_KEY) {
+    throw new Error('API_KEY is required');
+}
+
 const Influx = require('influx');
 const request = require('request-promise');
 
@@ -32,16 +36,22 @@ let statsRequestObj = {
 };
 
 function getBasicStats() {
+    log(`${new Date()}: Getting Basic Stats`);
+
     return request(statsRequestObj);
 }
 
 function getDetailedStats() {
+    log(`${new Date()}: Getting Detailed Stats`);
+
     return request(Object.assign(statsRequestObj, {
         url: 'https://battlefieldtracker.com/bf1/api/Stats/DetailedStats'
     }));
 }
 
 function onGetBasicStats(response) {
+    log(`${new Date()}: Parsing Basic Stats`);
+
     let stats = response.body.result;
 
     let kdr = stats.kills / stats.deaths;
@@ -67,6 +77,8 @@ function onGetBasicStats(response) {
 }
 
 function onGetDetailedStats(response) {
+    log(`${new Date()}: Parsing Detailed Stats`);
+
     let stats = response.body.result;
 
     let value = {
@@ -139,6 +151,11 @@ function writeToInflux(seriesName, values, tags) {
     ]);
 }
 
+function handleError(err) {
+    log(`${new Date()}: Error`);
+    log(err);
+}
+
 function restart(err) {
     if (err) {
         console.log(err);
@@ -153,7 +170,9 @@ function getAllTheStats() {
         .then(onGetBasicStats)
         .then(getDetailedStats)
         .then(onGetDetailedStats)
+        .catch(handleError)
         .finally(restart);
 }
 
+log(`${new Date()}: Initialize BF12Influx`);
 getAllTheStats();
