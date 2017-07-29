@@ -151,6 +151,10 @@ function writeToInflux(seriesName, values, tags) {
     ]);
 }
 
+function log(message) {
+    console.log(message);
+}
+
 function handleError(err) {
     log(`${new Date()}: Error`);
     log(err);
