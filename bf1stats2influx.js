@@ -56,6 +56,12 @@ function onGetBasicStats(response) {
 
     let stats = response.body.result;
 
+    if (!stats.rank) {
+        stats.rank = {
+            number: 0
+        }
+    }
+
     let kdr = stats.kills / stats.deaths;
     let rankImageUrl = `https://battlefieldtracker.com/Images/bf1/ranks/${stats.rank.number}.png`;
 
