@@ -1,4 +1,4 @@
-# deluge2influx
+# bf1stats2influx
 Pipe Battlefield1 metrics to InfluxDB from https://battlefieldtracker.com/
 
 Most basic form:
