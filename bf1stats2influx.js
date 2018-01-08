@@ -21,10 +21,11 @@ const influxClient = new Influx.InfluxDB({
 const API_KEY = process.env.API_KEY || '';
 const PLATFORM = process.env.PLATFORM || 2;
 const DISPLAYNAME = process.env.DISPLAYNAME || 'mattvantassel';
+const BFTRACKER_BASEURL = 'https://battlefieldtracker.com/bf1/api/Stats'
 
 let statsRequestObj = {
     method: 'POST',
-    url: 'https://battlefieldtracker.com/bf1/api/Stats/BasicStats',
+    url: `${BFTRACKER_BASEURL}/BasicStats`,
     json: true,
     gzip: true,
     resolveWithFullResponse: true,
@@ -47,7 +48,7 @@ function getDetailedStats() {
     log(`${new Date()}: Getting Detailed Stats`);
 
     return request(Object.assign(statsRequestObj, {
-        url: 'https://battlefieldtracker.com/bf1/api/Stats/DetailedStats'
+        url: `${BFTRACKER_BASEURL}/DetailedStats`
     }));
 }
 
@@ -178,13 +179,15 @@ function restart(err) {
 }
 
 function getAllTheStats() {
-    getBasicStats()
-        .then(onGetBasicStats)
-        .then(getDetailedStats)
-        .then(onGetDetailedStats)
-        .catch(handleError)
-        .finally(restart);
+    api.log(`${new Date()}: Initialize BF1Stats2Influx`);
+
+    let getBasicData = getBasicStats().then(onGetBasicStats).catch(handleError);
+
+    let getDetailedData = api.getDetailedStats().then(onGetDetailedStats).catch(handleError);
+
+    Promise.all([getBasicData, getDetailedData]).then(restart, reason => {
+        api.log(`${new Date()}: ${reason}`);
+    }).catch(handleError);
 }
 
-log(`${new Date()}: Initialize BF12Influx`);
 getAllTheStats();
