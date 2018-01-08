@@ -183,7 +183,7 @@ function getAllTheStats() {
 
     let getBasicData = getBasicStats().then(onGetBasicStats).catch(handleError);
 
-    let getDetailedData = api.getDetailedStats().then(onGetDetailedStats).catch(handleError);
+    let getDetailedData = getDetailedStats().then(onGetDetailedStats).catch(handleError);
 
     Promise.all([getBasicData, getDetailedData]).then(restart, reason => {
         api.log(`${new Date()}: ${reason}`);
