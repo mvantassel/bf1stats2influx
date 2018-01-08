@@ -179,14 +179,14 @@ function restart(err) {
 }
 
 function getAllTheStats() {
-    api.log(`${new Date()}: Initialize BF1Stats2Influx`);
+    log(`${new Date()}: Initialize BF1Stats2Influx`);
 
     let getBasicData = getBasicStats().then(onGetBasicStats).catch(handleError);
 
     let getDetailedData = getDetailedStats().then(onGetDetailedStats).catch(handleError);
 
     Promise.all([getBasicData, getDetailedData]).then(restart, reason => {
-        api.log(`${new Date()}: ${reason}`);
+        log(`${new Date()}: ${reason}`);
     }).catch(handleError);
 }
 
